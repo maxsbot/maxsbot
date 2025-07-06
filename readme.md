@@ -48,11 +48,7 @@ Colleagues value my clear, empathetic communication and the mentorship programs 
 
 ## 📊 GitHub Analytics
 <p align="center">
-  <img height="180" src=".github-stats/github_stats.svg" alt="stats"/>
-  <img height="180" src=".github-stats/github_streak.svg" alt="streak"/>
-</p>
-<p align="center">
-  <img height="180" src=".github-stats/top_languages.svg" alt="langs"/>
+  <img src="metrics.svg" alt="metrics" width="100%"/>
 </p>
 
 ---

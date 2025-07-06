@@ -1,45 +1,26 @@
-name: Generate README stats (user-statistician)
+name: GitHub profile metrics
 
 on:
-  schedule:   # diário 02h UTC (23h BRT)
+  schedule:           # todo dia às 02 h UTC (23 h BRT)
     - cron: '0 2 * * *'
-  workflow_dispatch:
+  workflow_dispatch:  # botão “Run workflow”
 
 jobs:
-  stats:
+  build:
     runs-on: ubuntu-latest
     permissions:
-      contents: write         # para commitar SVGs
+      contents: write   # precisa commitar o SVG
 
     steps:
-      - uses: actions/checkout@v4
-
-      # 1️⃣ Card geral
-      - name: Stats card
-        uses: cicirello/user-statistician@v1.4.0    # <- versão nova
+      - uses: lowlighter/metrics@latest
         with:
-          image-file: .github-stats/github_stats.svg
-          colors: dark
-          hide-keys: contributions,languages
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_STATS_TOKEN }}
-
-      # 2️⃣ Card de contribuições (equiv. streak)
-      - name: Contributions card
-        uses: cicirello/user-statistician@v1.4.0
-        with:
-          image-file: .github-stats/github_streak.svg
-          colors: dark
-          hide-keys: general,repositories,languages
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_STATS_TOKEN }}
-
-      # 3️⃣ Card de linguagens
-      - name: Languages card
-        uses: cicirello/user-statistician@v1.4.0
-        with:
-          image-file: .github-stats/top_languages.svg
-          colors: dark
-          hide-keys: general,repositories,contributions
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_STATS_TOKEN }}
+          token: ${{ secrets.GH_STATS_TOKEN }}
+          user: maxsbot
+          template: classic          # visual padrão (dark-aware)
+          base: header, activity, community, repositories
+          config_timezone: America/Maceio
+          plugin_languages: yes
+          plugin_languages_categories: programming
+          plugin_lines: yes
+          plugin_isocalendar: yes
+          output_action: commit      # commita metrics.svg na raiz
