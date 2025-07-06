@@ -15,7 +15,7 @@ jobs:
 
       # ➊ Card geral (stats + repos)
       - name: Generate stats card
-        uses: cicirello/user-statistician@v1
+        uses: cicirello/user-statistician@v1.4.0
         with:
           image-file: .github-stats/github_stats.svg
           colors: dark                # tema escuro
@@ -25,7 +25,7 @@ jobs:
 
       # ➋ Card de contribuições (≈ “streak”)
       - name: Generate contributions card
-        uses: cicirello/user-statistician@v1
+        uses: cicirello/user-statistician@v1.4.0
         with:
           image-file: .github-stats/github_streak.svg
           colors: dark
@@ -35,7 +35,7 @@ jobs:
 
       # ➌ Card de linguagens
       - name: Generate languages card
-        uses: cicirello/user-statistician@v1
+        uses: cicirello/user-statistician@v1.4.0
         with:
           image-file: .github-stats/top_languages.svg
           colors: dark
