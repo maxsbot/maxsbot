@@ -48,11 +48,11 @@ Colleagues value my clear, empathetic communication and the mentorship programs 
 
 ## 📊 GitHub Analytics
 <p align="center">
-  <img height="180" src="https://github-readme-stats.vercel.app/api?username=maxsbot&show_icons=true&theme=dark&hide_border=true" alt="stats"/>
-  <img height="180" src="https://github-readme-streak-stats.herokuapp.com/?user=maxsbot&theme=dark&hide_border=true" alt="streak"/>
+  <img height="180" src=".github-stats/github_stats.svg" alt="stats"/>
+  <img height="180" src=".github-stats/github_streak.svg" alt="streak"/>
 </p>
 <p align="center">
-  <img height="180" src="https://github-readme-stats.vercel.app/api/top-langs/?username=maxsbot&layout=compact&theme=dark&hide_border=true" alt="langs"/>
+  <img height="180" src=".github-stats/top_languages.svg" alt="langs"/>
 </p>
 
 ---
