@@ -1,49 +1,45 @@
-name: Generate README stats (curl)
+name: Generate README stats (user-statistician)
 
 on:
-  # roda todo dia às 02 h UTC (23 h no horário de Brasília)
-  schedule:
+  schedule:   # diário 02h UTC (23h BRT)
     - cron: '0 2 * * *'
-  # permite disparar manualmente pelo botão “Run workflow”
   workflow_dispatch:
 
 jobs:
   stats:
     runs-on: ubuntu-latest
-
-    # o job vai escrever no repositório (commit dos SVGs)
     permissions:
-      contents: write
+      contents: write         # para commitar SVGs
 
     steps:
-      # 1. Checkout do repositório
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      # 2. Baixa os três cards (stats, streak, top-langs) já contando privados
-      - name: Download stats cards (private repos included)
+      # 1️⃣ Card geral
+      - name: Stats card
+        uses: cicirello/user-statistician@v1.4.0    # <- versão nova
+        with:
+          image-file: .github-stats/github_stats.svg
+          colors: dark
+          hide-keys: contributions,languages
         env:
-          GH_TOKEN: ${{ secrets.GH_STATS_TOKEN }}   # PAT com "Contents → Read-only"
-        run: |
-          mkdir -p .github-stats
+          GITHUB_TOKEN: ${{ secrets.GH_STATS_TOKEN }}
 
-          curl -L \
-            "https://github-readme-stats.vercel.app/api?username=maxsbot&include_all_commits=true&count_private=true&theme=dark&hide_border=true&token=$GH_TOKEN" \
-            -o .github-stats/github_stats.svg
+      # 2️⃣ Card de contribuições (equiv. streak)
+      - name: Contributions card
+        uses: cicirello/user-statistician@v1.4.0
+        with:
+          image-file: .github-stats/github_streak.svg
+          colors: dark
+          hide-keys: general,repositories,languages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_STATS_TOKEN }}
 
-          curl -L \
-            "https://github-readme-streak-stats.herokuapp.com?user=maxsbot&include_all_commits=true&count_private=true&theme=dark&hide_border=true&token=$GH_TOKEN" \
-            -o .github-stats/github_streak.svg
-
-          curl -L \
-            "https://github-readme-stats.vercel.app/api/top-langs/?username=maxsbot&layout=compact&theme=dark&hide_border=true&count_private=true&token=$GH_TOKEN" \
-            -o .github-stats/top_languages.svg
-
-      # 3. Commita e faz push se algo mudou
-      - name: Commit & push updated SVGs
-        run: |
-          git config --global user.name  "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add .github-stats
-          git diff --cached --quiet || git commit -m "chore(stats): atualizar SVGs"
-          git push
+      # 3️⃣ Card de linguagens
+      - name: Languages card
+        uses: cicirello/user-statistician@v1.4.0
+        with:
+          image-file: .github-stats/top_languages.svg
+          colors: dark
+          hide-keys: general,repositories,contributions
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_STATS_TOKEN }}
