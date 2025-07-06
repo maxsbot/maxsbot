@@ -2,29 +2,22 @@
 name: Generate README stats
 
 on:
-  schedule:          # executa todo dia às 2 h (UTC)
-    - cron:  '0 2 * * *'
-  workflow_dispatch: # permite rodar manualmente
+  schedule:
+    - cron: '0 2 * * *'   # todo dia às 02 h UTC
+  workflow_dispatch:
 
 jobs:
-  build:
+  stats:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Generate GitHub stats
-        uses: anuraghazra/github-readme-stats@main
+      # Gera o SVG e faz o commit/push automático
+      - uses: cicirello/user-statistician@v1
         with:
-          token: ${{ secrets.GH_STATS_TOKEN }}
-          user:  maxsbot
-          include_all_commits: true   # pulls privados contam
-          count_private:      true
+          token: ${{ secrets.GH_STATS_TOKEN }}   # PAT com Contents → Read-only
+          image-file: .github-stats/userstats.svg
+          include-title: true
+          theme: dark           # temas: dark, radical, etc.
+          commit-message: "chore(stats): atualizar SVGs"
 
-      - name: Commit generated files
-        run: |
-          git config --global user.name  "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add .github-stats # pasta criada pelo action
-          git commit -m "chore(stats): atualizar SVGs" || echo "nada a commitar"
-          git push 
