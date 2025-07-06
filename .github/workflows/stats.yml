@@ -1,23 +1,44 @@
-# .github/workflows/stats.yml
 name: Generate README stats
 
 on:
   schedule:
-    - cron: '0 2 * * *'   # todo dia às 02 h UTC
+    - cron: '0 2 * * *'   # diário às 02 h UTC
   workflow_dispatch:
 
 jobs:
   stats:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write       # necessário para o commit do SVG
     steps:
       - uses: actions/checkout@v4
 
-      # Gera o SVG e faz o commit/push automático
-      - uses: cicirello/user-statistician@v1
+      # ➊ Card geral (stats + repos)
+      - name: Generate stats card
+        uses: cicirello/user-statistician@v1
         with:
-          token: ${{ secrets.GH_STATS_TOKEN }}   # PAT com Contents → Read-only
-          image-file: .github-stats/userstats.svg
-          include-title: true
-          theme: dark           # temas: dark, radical, etc.
-          commit-message: "chore(stats): atualizar SVGs"
+          image-file: .github-stats/github_stats.svg
+          colors: dark                # tema escuro
+          hide-keys: contributions,languages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_STATS_TOKEN }}
 
+      # ➋ Card de contribuições (≈ “streak”)
+      - name: Generate contributions card
+        uses: cicirello/user-statistician@v1
+        with:
+          image-file: .github-stats/github_streak.svg
+          colors: dark
+          hide-keys: general,repositories,languages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_STATS_TOKEN }}
+
+      # ➌ Card de linguagens
+      - name: Generate languages card
+        uses: cicirello/user-statistician@v1
+        with:
+          image-file: .github-stats/top_languages.svg
+          colors: dark
+          hide-keys: general,repositories,contributions
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_STATS_TOKEN }}
