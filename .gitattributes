@@ -1,0 +1,7 @@
+# --- Linguist overrides ---
+# Treat Jupyter notebooks as generated so they don't count towards language stats
+*.ipynb linguist-generated
+
+# Mark the virtual-env directory as vendored (ignored by Linguist language breakdown)
+.venv/** linguist-vendored
+venv/** linguist-vendored
